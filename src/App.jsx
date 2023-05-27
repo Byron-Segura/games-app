@@ -1,9 +1,11 @@
-import './App.css'
+import { SearchForm } from './components/Form'
+import { Header } from './components/Header'
 
 function App () {
   return (
-    <div className='text-3xl font-bold underline text-cyan-400'>
-      <p>AAA</p>
+    <div>
+      <Header />
+      <SearchForm />
     </div>
   )
 }

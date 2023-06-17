@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { SimilarGames } from './pages/SimilarGames/SimilarGames.jsx'
-import { UpcomingGames } from './pages/UpcomingGames/UpcomingGames.jsx'
 import { Root } from './routes/Root.jsx'
 import { Home } from './pages/Home/Home'
+import { LatestReleases } from './pages/LatestReleases/LatestReleases'
+import { FreeGames } from './pages/FreeGames/FreeGames'
 
 const router = createBrowserRouter([
   {
@@ -21,8 +22,12 @@ const router = createBrowserRouter([
         element: <SimilarGames />
       },
       {
-        path: 'upcoming-games',
-        element: <UpcomingGames />
+        path: 'free-games',
+        element: <FreeGames />
+      },
+      {
+        path: 'latest-releases',
+        element: <LatestReleases />
       }
     ]
   }

@@ -1,3 +1,5 @@
+const API_KEY = '5191f62bfe38d99afa126157a050966c2cdb1047'
+
 const getProxyUrl = (apiUrl) => {
   const proxyUrl = `http://localhost:3000/api-proxy?url=${encodeURIComponent(apiUrl)}`
 
@@ -5,8 +7,7 @@ const getProxyUrl = (apiUrl) => {
 }
 
 export async function getGameIdBySearch (search) {
-  console.log(search)
-  const API_URL = `https://www.giantbomb.com/api/search/?api_key=5191f62bfe38d99afa126157a050966c2cdb1047&format=json&query=${search}&resources=game&field_list=name,id`
+  const API_URL = `https://www.giantbomb.com/api/search/?api_key=${API_KEY}&format=json&query=${search}&resources=game&field_list=name,id`
 
   try {
     const res = await fetch(getProxyUrl(API_URL))
@@ -21,7 +22,7 @@ export async function getGameIdBySearch (search) {
 }
 
 export async function getSimilarGamesById (gameID) {
-  const API_URL = `https://www.giantbomb.com/api/game/${gameID}/?api_key=5191f62bfe38d99afa126157a050966c2cdb1047&format=json&field_list=similar_games,name`
+  const API_URL = `https://www.giantbomb.com/api/game/${gameID}/?api_key=${API_KEY}&format=json&field_list=similar_games,name`
 
   try {
     const res = await fetch(getProxyUrl(API_URL))
@@ -38,7 +39,7 @@ export async function getSimilarGamesById (gameID) {
 }
 
 export async function getSimilarGamesData (gamesIDs) {
-  const API_URL = `https://www.giantbomb.com/api/games/?api_key=5191f62bfe38d99afa126157a050966c2cdb1047&format=json&filter=id:${gamesIDs}&field_list=name,id,deck,image,platforms`
+  const API_URL = `https://www.giantbomb.com/api/games/?api_key=${API_KEY}&format=json&filter=id:${gamesIDs}&field_list=name,id,deck,image,platforms,original_release_date`
 
   try {
     const res = await fetch(getProxyUrl(API_URL))
@@ -51,7 +52,8 @@ export async function getSimilarGamesData (gamesIDs) {
       id: game.id,
       description: game.deck,
       platforms: game.platforms,
-      cover: game.image.original_url
+      cover: game.image.medium_url,
+      release: game.original_release_date
     }))
   } catch (err) {
     console.log(err)
@@ -64,12 +66,11 @@ export async function fetchSimilarGames (search) {
     const gameResult = await getGameIdBySearch(search)
     const similarGamesResult = await getSimilarGamesById(gameResult.id)
     const gamesDataResult = await getSimilarGamesData(similarGamesResult.gamesIDs)
+    console.log(gamesDataResult)
 
-    return { gamesData: gamesDataResult }
+    return gamesDataResult
   } catch (err) {
     console.log(err)
     return null
   }
 }
-
-// crash bandicoot

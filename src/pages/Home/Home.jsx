@@ -1,10 +1,11 @@
 import { SearchForm } from '../../components/SearchForm'
 import { fetchSearchGame } from '../../services/giantAPI/search_game/fetchSearchGames'
+import { Title } from '../shared/Title'
 
 export function Home () {
   return (
     <section>
-      <h2 className='text-rose-900  text-3xl text font-bold'>Search for a specific game</h2>
+      <Title text='Search for a specific game' />
       <SearchForm fetchAPI={fetchSearchGame} labelText='Search game info' />
     </section>
   )

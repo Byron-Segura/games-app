@@ -1,8 +1,26 @@
+import { useEffect } from 'react'
+import { useGames } from '../../hooks/useGames'
+import { fetchLatestGames } from '../../services/giantAPI/latest_games/fetchLatestGames'
+import { Games } from '../../components/Games'
+import { Loading } from '../../components/Loading'
+import { Title } from '../shared/Title'
+
 export function LatestReleases () {
+  const { getGames, loading, games } = useGames()
+
+  useEffect(() => {
+    getGames(fetchLatestGames)
+  }, [])
+
   return (
     <section>
-      <h2 className='text-rose-900  text-3xl text font-bold'>Latest Releases</h2>
-      <p className='mt-4 text-base '>Latest</p>
+      <Title text='Latest Releases' />
+      <p className='mt-4 text-base'>Discover the latest videogame releases</p>
+
+      <main className='mt-8'>
+        {loading ? <Loading /> : ''}
+        {games.length > 0 ? <Games games={games} /> : ''}
+      </main>
     </section>
   )
 }

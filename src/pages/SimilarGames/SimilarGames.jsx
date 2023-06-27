@@ -1,12 +1,14 @@
-import { SearchForm } from './SearchForm'
+import { fetchSimilarGames } from '../../services/giantAPI/similar_games/fetchSimilarGames'
+import { SearchForm } from '../../components/SearchForm'
+import { Title } from '../shared/Title'
 
 export function SimilarGames () {
   return (
     <section>
-      <h2 className='text-rose-900  text-3xl text font-bold'>Discover Similar Games</h2>
-      <p className='mt-4 text-base '>Search for video games recommendations, and discover a list of similar titles.
+      <Title text='Discover Similar Games' />
+      <p className='mt-4 text-base '>Search for your favourites video games and discover a list of similar titles.
       </p>
-      <SearchForm />
+      <SearchForm fetchAPI={fetchSimilarGames} labelText='Search for similar Games' />
     </section>
   )
 }

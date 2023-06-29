@@ -6,7 +6,7 @@ import { SimilarGames } from './pages/SimilarGames/SimilarGames.jsx'
 import { Root } from './routes/Root.jsx'
 import { Home } from './pages/Home/Home'
 import { LatestReleases } from './pages/LatestReleases/LatestReleases'
-import { FreeGames } from './pages/FreeGames/FreeGames'
+import { UpcomingGames } from './pages/UpcomingGames/UpcomingGames'
 
 const router = createBrowserRouter([
   {
@@ -22,8 +22,8 @@ const router = createBrowserRouter([
         element: <SimilarGames />
       },
       {
-        path: 'free-games',
-        element: <FreeGames />
+        path: 'upcoming-games',
+        element: <UpcomingGames />
       },
       {
         path: 'latest-releases',

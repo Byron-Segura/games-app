@@ -11,19 +11,14 @@ async function getRecentReleases () {
 
     const gameData = json.results
 
-    const filteredItems = gameData.filter((game, index, array) => {
-      return array.findIndex(obj => obj.name === game.name) === index
-    })
-
-    return filteredItems.map(game => ({
+    return gameData.map(game => ({
       name: game.name,
       id: game.id,
       cover: game.image.medium_url,
-      release: game.release_date.slice(0, 10)
+      release: [game.release_date.slice(0, 10)]
     }))
-  } catch (err) {
-    console.log(err)
-    return null
+  } catch {
+    return new Error('Falied to find games :(')
   }
 }
 
@@ -31,10 +26,8 @@ export async function fetchLatestGames () {
   try {
     const gamesDataResult = await getRecentReleases()
     const data = gamesDataResult
-
     return data
   } catch (err) {
-    console.log(err)
-    return null
+    return err
   }
 }

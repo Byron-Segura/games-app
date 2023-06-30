@@ -1,16 +1,27 @@
 export function CheckGamesInfo (info) {
-  const checkImage = (img) => {
-    if (img.includes('default-16')) {
-      console.log('no-image')
-    }
-  }
+  /*   const checkImage = (img) => {
+      if (img.includes('default-16')) {
+        console.log('no-image')
+      }
+    } */
 
-  const checkRelease = (year, month, day) => {
-    if (year && month && day) {
-      return year + '-' + month + '-' + day
+  const filteredRepeatedItems = info.filter((game, index, array) => {
+    return array.findIndex(obj => obj.name === game.name) === index
+  })
+
+  const checkRelease = (release) => {
+    const year = release[0]
+    const month = release[1]
+    const day = release[2]
+
+    if (release[0] === null) return 'Unknown'
+
+    if (release.length === 1) {
+      return release
     }
-    if (year === null) {
-      return 'Unkown'
+
+    if (year && month && day) {
+      return `${year}-${month}-${day}`
     }
 
     if (month === null || day === null) {
@@ -26,16 +37,11 @@ export function CheckGamesInfo (info) {
     }
   }
 
-  return info.map((game, index) => ({
+  return filteredRepeatedItems.map((game) => ({
     name: game.name,
     id: game.id,
-    cover: checkImage(game.cover, index),
+    cover: game.cover,
     release: checkRelease(game.release),
     description: checkDescription(game.description)
   }))
 }
-// <img src='../assets/No_Image_Available.jpg' alt='No image available' />
-
-// const filterRepeatedGames = info.filter((game, index, array) => {
-//   return array.findIndex(obj => obj.name === game.name) === index
-// })

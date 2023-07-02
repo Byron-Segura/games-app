@@ -1,76 +1,91 @@
-const API_KEY = '5191f62bfe38d99afa126157a050966c2cdb1047'
+export const API_KEY = '5191f62bfe38d99afa126157a050966c2cdb1047'
 
-const getProxyUrl = (apiUrl) => {
+export const getProxyUrl = (apiUrl) => {
   const proxyUrl = `http://localhost:3000/api-proxy?url=${encodeURIComponent(apiUrl)}`
 
   return proxyUrl
 }
 
-export async function getGameIdBySearch (search) {
-  const API_URL = `https://www.giantbomb.com/api/search/?api_key=${API_KEY}&format=json&query=${search}&resources=game&field_list=name,id`
+async function getGameId (search) {
+  const API_URL = `https://www.giantbomb.com/api/search/?api_key=${API_KEY}&format=json&resources=game&query=${search}&field_list=id`
 
   try {
     const res = await fetch(getProxyUrl(API_URL))
     const json = await res.json()
+
+    if (!json.results || json.results.length === 0) {
+      throw new Error('Game not found, for more accuracy write the complete name of the game')
+    }
+
     const gameId = json.results[0].id
 
-    return { id: gameId }
+    return gameId
   } catch (err) {
-    console.log(err)
-    return null
+    throw new Error('Game not found')
   }
 }
 
-export async function getSimilarGamesById (gameID) {
-  const API_URL = `https://www.giantbomb.com/api/game/${gameID}/?api_key=${API_KEY}&format=json&field_list=similar_games,name`
+async function getSimilarGamesById (gameID) {
+  const API_URL = `https://www.giantbomb.com/api/game/${gameID}/?api_key=${API_KEY}&format=json&limit=50&field_list=similar_games,name`
 
   try {
     const res = await fetch(getProxyUrl(API_URL))
     const json = await res.json()
-    const similarGames = json.results.similar_games
+    console.log(json.results, 'json')
 
-    const iD = similarGames.map(game => game.id)
+    if (!json.results || !json.results.similar_games) {
+      throw new Error('No similar games found')
+    }
+
+    const similarGames = json.results.similar_games
+    console.log(similarGames, 'similarGames')
+
+    const iD = similarGames.map((game) => game.id)
     const gamesIDs = iD.join('|')
 
     return { gamesIDs }
   } catch (err) {
-    return new Error('No games found :(')
+    throw new Error('Failed to get similar games by ID')
   }
 }
 
-export async function getSimilarGamesData (gamesIDs) {
-  const API_URL = `https://www.giantbomb.com/api/games/?api_key=${API_KEY}&format=json&filter=id:${gamesIDs}&field_list=name,id,deck,image,platforms,original_release_date`
+async function getSimilarGamesData (gamesIDs) {
+  const API_URL = `https://www.giantbomb.com/api/games/?api_key=${API_KEY}&format=json&filter=id:${gamesIDs}&field_list=name,id,deck,image,original_release_date`
 
   try {
     const res = await fetch(getProxyUrl(API_URL))
     const json = await res.json()
 
+    if (!json.results || json.results.length === 0) {
+      throw new Error('No games found')
+    }
+
     const gameData = json.results
 
-    return gameData.map(game => ({
+    return gameData.map((game) => ({
       name: game.name,
       id: game.id,
-      description: game.deck,
-      platforms: game.platforms,
-      cover: game.image.medium_url,
-      release: game.original_release_date
+      cover: game.image?.medium_url,
+      release: game.original_release_date,
+      description: game.deck
     }))
   } catch (err) {
-    console.log(err)
-    return null
+    throw new Error('Failed to get games information')
   }
 }
 
 export async function fetchSimilarGames (search) {
   try {
-    const gameResult = await getGameIdBySearch(search)
-    const similarGamesResult = await getSimilarGamesById(gameResult.id)
+    const gameResult = await getGameId(search)
+    // console.log(gameResult, 'gameResult')
+    const similarGamesResult = await getSimilarGamesById(gameResult)
+    // console.log(similarGamesResult, 'similarGamesResult')
     const gamesDataResult = await getSimilarGamesData(similarGamesResult.gamesIDs)
-    console.log(gamesDataResult)
+    console.log(gamesDataResult, 'gamesDataResult')
 
     return gamesDataResult
   } catch (err) {
-    console.log(err)
-    return null
+    console.error(err)
+    return err
   }
 }

@@ -6,7 +6,6 @@ async function getGameBySearch (search) {
   try {
     const res = await fetch(getProxyUrl(API_URL))
     const json = await res.json()
-
     const gameData = json.results
 
     return gameData.map(game => ({
@@ -17,8 +16,7 @@ async function getGameBySearch (search) {
       release: game.original_release_date
     }))
   } catch (err) {
-    console.log(err)
-    return null
+    return new Error('Game not found, for more accuracy write the complete name of the game')
   }
 }
 
@@ -30,6 +28,6 @@ export async function fetchSearchGame (search) {
     return data
   } catch (err) {
     console.log(err)
-    return null
+    return err
   }
 }

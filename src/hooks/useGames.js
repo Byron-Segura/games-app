@@ -12,7 +12,6 @@ export function useGames () {
       setError(null)
       const newGames = await fetchAPI(search)
       const checkedGames = CheckGamesInfo(newGames)
-      console.log(newGames)
       setGames(checkedGames)
     } catch (e) {
       setError(e)

@@ -31,14 +31,12 @@ async function getSimilarGamesById (gameID) {
   try {
     const res = await fetch(getProxyUrl(API_URL))
     const json = await res.json()
-    console.log(json.results, 'json')
 
     if (!json.results || !json.results.similar_games) {
       throw new Error('No similar games found')
     }
 
     const similarGames = json.results.similar_games
-    console.log(similarGames, 'similarGames')
 
     const iD = similarGames.map((game) => game.id)
     const gamesIDs = iD.join('|')
@@ -77,11 +75,8 @@ async function getSimilarGamesData (gamesIDs) {
 export async function fetchSimilarGames (search) {
   try {
     const gameResult = await getGameId(search)
-    // console.log(gameResult, 'gameResult')
     const similarGamesResult = await getSimilarGamesById(gameResult)
-    // console.log(similarGamesResult, 'similarGamesResult')
     const gamesDataResult = await getSimilarGamesData(similarGamesResult.gamesIDs)
-    console.log(gamesDataResult, 'gamesDataResult')
 
     return gamesDataResult
   } catch (err) {

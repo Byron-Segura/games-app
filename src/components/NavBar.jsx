@@ -54,7 +54,7 @@ export function NavBar () {
         </div>
       </aside>
       <span
-        className={sidebarOpen ? 'fixed inset-0 bg-gray-800/20 z-20' : 'hidden'}
+        className={sidebarOpen ? 'fixed inset-0 bg-gray-800/20 z-20 sm:hidden' : 'hidden'}
         onClick={toggleSidebar}
       />
     </section>

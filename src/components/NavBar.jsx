@@ -26,25 +26,25 @@ export function NavBar () {
       >
         <div className='h-full px-3 py-4 bg-stone-800'>
           <ul className='space-y-2 font-medium'>
-            <li>
+            <li onClick={toggleSidebar}>
               <NavLink to=''>
                 <HomeIcon />
                 <span className='ml-1'>Home</span>
               </NavLink>
             </li>
-            <li>
+            <li onClick={toggleSidebar}>
               <NavLink to='similar-games'>
                 <SimilarIcon />
                 <span className='flex-1 ml-3 whitespace-nowrap'>Similar Games</span>
               </NavLink>
             </li>
-            <li>
+            <li onClick={toggleSidebar}>
               <NavLink to='upcoming-games'>
                 <UpcomingIcon />
                 <span className='flex-1 ml-3 whitespace-nowrap'>Upcoming Games</span>
               </NavLink>
             </li>
-            <li>
+            <li onClick={toggleSidebar}>
               <NavLink to='latest-releases'>
                 <LatestGamesIcon />
                 <span className='flex-1 ml-3 whitespace-nowrap'>Latest Releases</span>

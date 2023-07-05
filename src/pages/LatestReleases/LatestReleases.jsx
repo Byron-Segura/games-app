@@ -15,12 +15,12 @@ export function LatestReleases () {
   return (
     <section>
       <Title text='Latest Releases' />
-      <p className='mt-4 text-base'>Discover the latest videogame releases</p>
+      <p className='mt-4 text-base md:ml-4'>Discover the latest videogame releases</p>
 
-      <main className='mt-8'>
+      <div className='mt-8'>
         {loading ? <Loading /> : ''}
         {games.length > 0 ? <Games games={games} /> : ''}
-      </main>
+      </div>
     </section>
   )
 }

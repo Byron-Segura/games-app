@@ -15,14 +15,14 @@ export function SimilarGames () {
   return (
     <section>
       <Title text='Discover Similar Games' />
-      <p className='mt-4 text-base '>Search for your favourites video games and discover a list of similar titles.
+      <p className='mt-4 text-base md:ml-4'>Search for your favourites video games and discover a list of similar titles.
       </p>
       <SearchForm onSearch={handleSearch} labelText='Search for similar Games' />
 
-      <main className='mt-8'>
+      <div className='mt-8'>
         {loading ? <Loading /> : ''}
         {games.length > 0 ? <Games games={games} /> : ''}
-      </main>
+      </div>
     </section>
   )
 }

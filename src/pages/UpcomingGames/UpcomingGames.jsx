@@ -15,12 +15,12 @@ export function UpcomingGames () {
   return (
     <section>
       <Title text='Upcoming Games' />
-      <p className='mt-4 text-base '>Upcoming videogames for the next months</p>
+      <p className='mt-4 text-base md:ml-4'>Upcoming videogames for the next months</p>
 
-      <main className='mt-8'>
+      <div className='mt-8'>
         {loading ? <Loading /> : ''}
         {games.length > 0 ? <Games games={games} /> : ''}
-      </main>
+      </div>
     </section>
   )
 }

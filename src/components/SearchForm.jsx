@@ -15,7 +15,7 @@ export function SearchForm ({ onSearch, labelText }) {
   }
 
   return (
-    <section>
+    <section className='md:ml-4'>
       <form className='text-lg mt-6' onSubmit={handleSubmit}>
         <label htmlFor='input' className='text-base text-rose-900'>
           {labelText}

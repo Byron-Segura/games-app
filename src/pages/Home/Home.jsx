@@ -17,10 +17,10 @@ export function Home () {
       <Title text='Search for a specific game' />
       <SearchForm onSearch={handleSearch} labelText='Search game info' />
 
-      <main className='mt-8'>
+      <div className='mt-8'>
         {loading ? <Loading /> : ''}
         {games.length > 0 ? <Games games={games} /> : ''}
-      </main>
+      </div>
     </section>
   )
 }

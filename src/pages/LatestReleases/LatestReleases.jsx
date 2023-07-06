@@ -6,7 +6,7 @@ import { Loading } from '../../components/Loading'
 import { Title } from '../shared/Title'
 
 export function LatestReleases () {
-  const { getGames, loading, games } = useGames()
+  const { getGames, loading, games, error } = useGames()
 
   useEffect(() => {
     getGames(fetchLatestGames)
@@ -18,8 +18,7 @@ export function LatestReleases () {
       <p className='mt-4 text-base md:ml-4'>Discover the latest videogame releases</p>
 
       <div className='mt-8'>
-        {loading ? <Loading /> : ''}
-        {games.length > 0 ? <Games games={games} /> : ''}
+        {loading ? <Loading /> : <Games games={games} error={error} />}
       </div>
     </section>
   )

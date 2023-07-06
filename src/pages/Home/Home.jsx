@@ -6,7 +6,7 @@ import { fetchSearchGame } from '../../services/giantAPI/search_game/fetchSearch
 import { Title } from '../shared/Title'
 
 export function Home () {
-  const { getGames, games, loading } = useGames()
+  const { getGames, games, loading, error } = useGames()
 
   const handleSearch = async (search) => {
     await getGames(fetchSearchGame, search)
@@ -18,8 +18,7 @@ export function Home () {
       <SearchForm onSearch={handleSearch} labelText='Search game info' />
 
       <div className='mt-8'>
-        {loading ? <Loading /> : ''}
-        {games.length > 0 ? <Games games={games} /> : ''}
+        {loading ? <Loading /> : <Games games={games} error={error} />}
       </div>
     </section>
   )

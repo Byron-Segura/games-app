@@ -6,7 +6,7 @@ import { Loading } from '../../components/Loading'
 import { Games } from '../../components/Games'
 
 export function SimilarGames () {
-  const { getGames, games, loading } = useGames()
+  const { getGames, games, loading, error } = useGames()
 
   const handleSearch = async (search) => {
     await getGames(fetchSimilarGames, search)
@@ -20,8 +20,7 @@ export function SimilarGames () {
       <SearchForm onSearch={handleSearch} labelText='Search for similar Games' />
 
       <div className='mt-8'>
-        {loading ? <Loading /> : ''}
-        {games.length > 0 ? <Games games={games} /> : ''}
+        {loading ? <Loading /> : <Games games={games} error={error} />}
       </div>
     </section>
   )

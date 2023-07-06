@@ -17,18 +17,21 @@ function ListOfGames ({ games }) {
   )
 }
 
-function NoGames () {
+function NoGames ({ error }) {
   return (
-    <h2>No games found</h2>
+    <div className='flex justify-center'>
+      <h2 className='text-2xl text-red-700'>{`*${error.message}*` || 'No games found'}</h2>
+    </div>
   )
 }
 
-export function Games ({ games }) {
+export function Games ({ games, error }) {
   const hasGames = games.length > 0
 
   return (
-    hasGames
-      ? <ListOfGames games={games} />
-      : <NoGames />
+    <>
+      {error && <NoGames error={error} />}
+      {hasGames && <ListOfGames games={games} />}
+    </>
   )
 }

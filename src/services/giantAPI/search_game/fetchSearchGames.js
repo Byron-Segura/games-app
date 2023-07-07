@@ -6,6 +6,11 @@ async function getGameBySearch (search) {
   try {
     const res = await fetch(getProxyUrl(API_URL))
     const json = await res.json()
+
+    if (json.number_of_total_results === 0) {
+      throw new Error('Game not found')
+    }
+
     const gameData = json.results
 
     return gameData.map(game => ({
@@ -16,18 +21,17 @@ async function getGameBySearch (search) {
       release: game.original_release_date
     }))
   } catch (err) {
-    return new Error('Game not found, for more accuracy write the complete name of the game')
+    if (err.message === 'Game not found') {
+      throw new Error('Game not found. Please provide the complete game name for better accuracy.')
+    } else {
+      throw new Error('An error occurred :(')
+    }
   }
 }
 
 export async function fetchSearchGame (search) {
-  try {
-    const gameDataResult = await getGameBySearch(search)
-    const data = gameDataResult.slice(0, 1)
+  const gameDataResult = await getGameBySearch(search)
+  const data = gameDataResult.slice(0, 1)
 
-    return data
-  } catch (err) {
-    console.log(err)
-    return err
-  }
+  return data
 }

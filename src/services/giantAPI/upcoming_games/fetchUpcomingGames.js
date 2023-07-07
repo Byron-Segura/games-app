@@ -18,18 +18,13 @@ async function getRecentReleases () {
       release: [game.expected_release_year, game.expected_release_month, game.expected_release_day]
     }))
   } catch (err) {
-    return new Error('Falied to find games :(')
+    throw new Error('Failed to find games :(')
   }
 }
 
 export async function fetchUpcomingGames () {
-  try {
-    const gamesDataResult = await getRecentReleases()
-    const data = gamesDataResult
+  const gamesDataResult = await getRecentReleases()
+  const data = gamesDataResult
 
-    return data
-  } catch (err) {
-    console.log(err)
-    return null
-  }
+  return data
 }

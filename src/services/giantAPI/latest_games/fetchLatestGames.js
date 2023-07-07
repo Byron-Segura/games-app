@@ -18,16 +18,13 @@ async function getRecentReleases () {
       release: [game.release_date.slice(0, 10)]
     }))
   } catch {
-    return new Error('Falied to find games :(')
+    throw new Error('Failed to find games :(')
   }
 }
 
 export async function fetchLatestGames () {
-  try {
-    const gamesDataResult = await getRecentReleases()
-    const data = gamesDataResult
-    return data
-  } catch (err) {
-    return err
-  }
+  const gamesDataResult = await getRecentReleases()
+  const data = gamesDataResult
+
+  return data
 }

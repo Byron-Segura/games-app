@@ -13,8 +13,8 @@ async function getGameId (search) {
     const res = await fetch(getProxyUrl(API_URL))
     const json = await res.json()
 
-    if (!json.results || json.results.length === 0) {
-      throw new Error('Game not found, for more accuracy write the complete name of the game')
+    if (json.number_of_total_results === 0) {
+      throw new Error('Game not found')
     }
 
     const gameId = json.results[0].id
@@ -25,25 +25,21 @@ async function getGameId (search) {
   }
 }
 
-async function getSimilarGamesById (gameID) {
+async function getSimilarGamesId (gameID) {
   const API_URL = `https://www.giantbomb.com/api/game/${gameID}/?api_key=${API_KEY}&format=json&limit=50&field_list=similar_games,name`
 
   try {
     const res = await fetch(getProxyUrl(API_URL))
     const json = await res.json()
 
-    if (!json.results || !json.results.similar_games) {
-      throw new Error('No similar games found')
-    }
-
     const similarGames = json.results.similar_games
 
     const iD = similarGames.map((game) => game.id)
     const gamesIDs = iD.join('|')
 
-    return { gamesIDs }
+    return gamesIDs
   } catch (err) {
-    throw new Error('Failed to get similar games by ID')
+    throw new Error('Failed to get similar games')
   }
 }
 
@@ -54,8 +50,8 @@ async function getSimilarGamesData (gamesIDs) {
     const res = await fetch(getProxyUrl(API_URL))
     const json = await res.json()
 
-    if (!json.results || json.results.length === 0) {
-      throw new Error('No games found')
+    if (json.number_of_total_results === 0) {
+      throw new Error('No similar games found')
     }
 
     const gameData = json.results
@@ -68,18 +64,20 @@ async function getSimilarGamesData (gamesIDs) {
       description: game.deck
     }))
   } catch (err) {
-    throw new Error('Failed to get games information')
+    if (err.message === 'Game not found') {
+      throw new Error('Game not found. Please provide the complete game name for better accuracy.')
+    } else if (err.message === 'No similar games found') {
+      throw new Error('No similar games were found')
+    } else {
+      throw new Error('An error occurred :(')
+    }
   }
 }
 
 export async function fetchSimilarGames (search) {
-  try {
-    const gameResult = await getGameId(search)
-    const similarGamesResult = await getSimilarGamesById(gameResult)
-    const gamesDataResult = await getSimilarGamesData(similarGamesResult.gamesIDs)
+  const gameResult = await getGameId(search)
+  const similarGamesResult = await getSimilarGamesId(gameResult)
+  const data = await getSimilarGamesData(similarGamesResult)
 
-    return gamesDataResult
-  } catch (err) {
-    throw err
-  }
+  return data
 }

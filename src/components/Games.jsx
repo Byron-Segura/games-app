@@ -20,7 +20,7 @@ function ListOfGames ({ games }) {
 function NoGames ({ error }) {
   return (
     <div className='flex justify-center'>
-      <h2 className='text-2xl text-red-700'>{`*${error.message}*` || 'No games found'}</h2>
+      <h2 className='text-2xl text-red-700 text-center'>{`*${error.message}*` || 'No games found'}</h2>
     </div>
   )
 }

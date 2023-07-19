@@ -7,11 +7,13 @@ import { Root } from './routes/Root.jsx'
 import { Home } from './pages/Home/Home'
 import { LatestReleases } from './pages/LatestReleases/LatestReleases'
 import { UpcomingGames } from './pages/UpcomingGames/UpcomingGames'
+import { Error } from './pages/ErrorPage/Error'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
+    errorElement: <Error />,
     children: [
       {
         path: '',
